@@ -9,4 +9,4 @@ Djerba
    :caption: Documentation
 
    introduction/introduction
-
+   concepts/how_djerba_works
