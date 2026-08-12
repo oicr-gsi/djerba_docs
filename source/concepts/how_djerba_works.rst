@@ -65,9 +65,9 @@ The `djerba.py` script has a number of subcommands or *modes* to set up and run 
 
 **Table 2**: Modes of the `djerba.py` command-line script
 
-See the [user guide](user_guide_FIXME) for command-line syntax and options.
+.. See the [user guide](user_guide_FIXME) for command-line syntax and options.
 
-The user guide also details more specialized [command-line scripts](link_FIXME) used for report production.
+.. The user guide also details more specialized [command-line scripts](link_FIXME) used for report production.
 
 Modular Components
 ==================
