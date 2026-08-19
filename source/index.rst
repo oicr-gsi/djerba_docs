@@ -10,3 +10,4 @@ Djerba
 
    introduction/introduction
    concepts/how_djerba_works
+   user_guide/user_guide

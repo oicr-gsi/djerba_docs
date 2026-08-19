@@ -175,17 +175,17 @@ Packages which Djerba will search for plugins are configured as a colon-separate
 .. _Python interpreter: https://docs.python.org/3/tutorial/interpreter.html
 .. _PYTHONPATH: https://docs.python.org/3/using/cmdline.html#envvar-PYTHONPATH
 
-Example
--------
+``DJERBA_PACKAGES`` Example
+---------------------------
 
 Suppose we have the following:
 
 - Environment variable ``DJERBA_PACKAGES=voyager:enterprise:ds9``
 - Python packages ``enterprise.plugins.cnv`` and ``ds9.plugins.cnv``
-- INI config file including a section ``[cnv]``.
+- INI config file including a section ``[cnv]``
 
 Then Djerba will load the plugin ``enterprise.plugins.cnv`` in preference to ``ds9.plugins.cnv``, because ``enterprise`` is farther left in the ``DJERBA_PACKAGES`` list.
 
-Specifically, the Djerba core code first checks the ``voyager`` package for a ``cnv`` plugin; when it does not find one, it then checks ``enterprise``; having found the package ``enterprise.plugins.cnv``, it then exits without examining the ``ds9`` package.
+Specifically, the Djerba core code first checks the ``voyager`` package for a ``cnv`` plugin; when it does not find one, it checks ``enterprise``; having found the package ``enterprise.plugins.cnv``, it proceeds without examining the ``ds9`` package.
 
-Note that, as in the above example, the name ``djerba`` does not have to be in the ``DJERBA_PACKAGES`` list, unless you want to load components from the main Djerba repository.
+Note that, as in the above example, the name ``djerba`` does not have to be in the ``DJERBA_PACKAGES`` list -- unless you want to load components from the main Djerba repository.
