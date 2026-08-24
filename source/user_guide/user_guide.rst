@@ -21,20 +21,18 @@ Hardware
 Operating System
 ----------------
 
-- Djerba runs in production under Ubuntu 22.04 LTS.
+- Djerba runs in production under `Ubuntu 22.04 LTS`_.
 - Other versions of Linux should work with little or no difficulty.
 - Limited testing of Djerba has successfully been carried out on MacOS.
-- Djerba has _not_ been tested on Microsoft Windows, and issues are likely to occur.
+- Djerba has *not* been tested on Microsoft Windows, and issues are likely to occur.
 
 .. _Ubuntu 22.04 LTS : https://releases.ubuntu.com/jammy/
 
 Software
 --------
 
-- `Python`_ version 3.10 or greater (at time of writing, if in doubt consult the `setup script`_).
-- The `wkhtmltopdf`_ binary must be on the system `PATH`.
-- For best results, the Arial font family should be installed (in `$HOME/.local/share/fonts` on a Linux machine).
-- Plugins may have additional dependencies; consult the documentation for the individual plugin.
+- `Python`_ version 3.13 or greater (at time of writing, if in doubt consult the `setup script`_).
+- The `wkhtmltopdf`_ utility is required for PDF conversion.
 
 .. _Python: https://www.python.org/downloads/
 .. _setup script: https://github.com/oicr-gsi/djerba/blob/main/setup.py
@@ -43,7 +41,19 @@ Software
 How To Install
 ==============
 
-The core functions of Djerba are written in Python, and Djerba is installed using standard Python tools.
+Overview
+--------
+
+Djerba is installed as follows:
+
+1. Install core Djerba functionality using the standard Python tool ``pip3``.
+2. Install the `wkhtmltopdf`_ utility.
+3. Install additional plugins (if any).
+
+Installation with ``pip3``
+--------------------------
+
+The core functions of Djerba are written in Python, and installed using standard Python tools.
 
 Python installation is covered in the `official Python documentation`_, in particular the `Python Packaging User Guide`_. You may wish to use a `Python virtual environment`_ to install Djerba without affecting your system Python directories.
 
@@ -58,11 +68,30 @@ Note that Djerba plugins may contain R scripts and other non-Python code. Instal
 .. _Python virtual environment: https://docs.python.org/3/library/venv.html
 .. _setup.py script: https://github.com/oicr-gsi/djerba/blob/main/setup.py
 
+The ``wkhtmltopdf`` Utility
+----------------------------
+
+- Djerba requires `wkhtmltopdf`_, an HTML to PDF conversion utility.
+- The utility must be installed, with the ``wkhtmltopdf``  binary on the system ``PATH``.
+- For best results, the Arial font family should be installed (in ``$HOME/.local/share/fonts`` on a Linux machine).
+
+Additional Plugin Repositories
+------------------------------
+
+If using plugins (or helpers, or mergers) from a location other than the main Djerba repository, they must be installed and visible on the ``PYTHONPATH`` environment variable.
+
+Typically, additional plugins will be installed using ``pip3``, similarly to core Djerba. Plugin dependencies may require additional steps to install and configure.
+  
 .. TODO add section for the Python Docker container
 
-**************
-Running Djerba
-**************
+******************
+Configuring Djerba
+******************
+
+Djerba has a number of global settings which control application behaviour. They are controlled by a combination of environment variables and configuration files. We recommend using a shell script, or a package such as `Environment Modules`_, to set up your preferred configuration before each use of Djerba.
+
+.. _Environment Modules: https://modules.readthedocs.io/en/latest/
+
 
 Environment Variables
 =====================
@@ -76,17 +105,17 @@ Djerba uses a number of `environment variables`_ to configure its behaviour.
 +===========================+======================+==========+==================================================================================+
 | ``DJERBA_ARCHIVE_CONFIG`` | INI file             | No       | Upload of JSON report documents to a [CouchDB database](FIXME_link)              |
 +---------------------------+----------------------+----------+----------------------------------------------------------------------------------+
-| ``DJERBA_BASE_DIR``       | Directory            | Yes      | Base directory where Djerba was installed                                        |
+| ``DJERBA_BASE_DIR``       | Directory            | Yes      | Base directory where Djerba was installed.                                       |
 |                           |                      |          | Eg. ``/usr/lib/python3.13/site-packages/djerba``                                 |
 +---------------------------+----------------------+----------+----------------------------------------------------------------------------------+
 | ``DJERBA_CORE_HTML_DIR``  | Directory            | No       | Location of templates and stylesheets for core HTML rendering                    |
 +---------------------------+----------------------+----------+----------------------------------------------------------------------------------+
-| ``DJERBA_RUN_DIR``        | Directory            | Yes      | Location of the ``util/data`` subdirectory of the Djerba installation            |
-|                           |                      |          | Typically ``${DJERBA_BASE_DIR}/util/data``                                       |
-+---------------------------+----------------------+----------+----------------------------------------------------------------------------------+
 | ``DJERBA_PACKAGES``       | Colon-separated list | Yes      | Names of top-level Djerba packages; see [external plugins](FIXME)                |
 +---------------------------+----------------------+----------+----------------------------------------------------------------------------------+
 | ``DJERBA_PRIVATE_DIR``    | Directory            | Yes      | Location of "private" files.                                                     |
++---------------------------+----------------------+----------+----------------------------------------------------------------------------------+
+| ``DJERBA_RUN_DIR``        | Directory            | Yes      | Location of the ``util/data`` subdirectory of the Djerba installation.           |
+|                           |                      |          | Typically ``${DJERBA_BASE_DIR}/util/data``                                       |
 +---------------------------+----------------------+----------+----------------------------------------------------------------------------------+
 | ``DJERBA_TEST_DIR``       | Directory            | No       | Location of data for unit tests                                                  |
 +---------------------------+----------------------+----------+----------------------------------------------------------------------------------+
@@ -105,11 +134,9 @@ Required and Optional Variables
 The ``DJERBA_PRIVATE_DIR``
 --------------------------
 
-This is a catch-all location where Djerba can read and write reference files.
+This is a location where Djerba can read and write files to control application-wide settings. In general the contents are not secret, but they are specific to configuring how Djerba runs.
 
-It contains the [username config file](FIXME).
-
-It is also the output location for the [activity tracker](FIXME). If the tracker is in use, ``DJERBA_PRIVATE_DIR`` must have a subdirectory called ``tracking``.
+.. It is also the output location for the [activity tracker](FIXME). If the tracker is in use, ``DJERBA_PRIVATE_DIR`` must have a subdirectory called ``tracking``.
 
 Core Configuration Files
 ========================
@@ -121,17 +148,19 @@ Archive Config
 
 The INI file specified by ``DJERBA_ARCHIVE_CONFIG`` controls upload of JSON report documents to the Djerba [CouchDB database](FIXME).
 
-Note that archiving is optional, and may be omitted with the ``--no-archive`` option to the ``djerba.py`` script.
+Note that archiving is optional, and may be omitted with the ``--no-archive`` option of the ``djerba.py`` script.
 
-Example
-^^^^^^^
+Example of Archive Config
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
-[archive]
-database_name = djerba
-username = djerba_production_user
-password = VerySecretPassword
-address = my-djerba-server.example.com
-port = 1234
+::
+
+   [archive]
+   database_name = djerba
+   username = djerba_production_user
+   password = VerySecretPassword
+   address = my-djerba-server.example.com
+   port = 1234
 
 
 User Name Config
@@ -145,8 +174,8 @@ Djerba looks up the username using standard UNIX environment variables: It first
 
 .. _qrsh command: https://manpages.org/qrsh
 
-Example
-^^^^^^^
+Example of ``djerba_users.json``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ::
 
@@ -162,6 +191,11 @@ HTML Configuration Files
 Djerba uses templates and stylesheets to control the overall look-and-feel of the HTML report output.
 
 The default versions of these files have the OICR branding and colour scheme. They are part of the Djerba [source code](https://github.com/oicr-gsi/djerba/tree/main/src/lib/djerba/core/html) and are copied to the Djerba installation directory. The user may set an alternate location for these files using the ``DJERBA_CORE_HTML_DIR`` environment variable.
+
+**************
+Running Djerba
+**************
+
 
 Configuring the INI File
 ========================
