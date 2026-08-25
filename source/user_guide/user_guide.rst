@@ -21,11 +21,13 @@ Hardware
 Operating System
 ----------------
 
-- Djerba runs in production under `Ubuntu 22.04 LTS`_.
-- Other versions of Linux should work with little or no difficulty.
+- Djerba runs in production under `Ubuntu 20.04 LTS`_.
+- OICR is preparing to move to `Ubuntu 22.04 LTS`_ and will update Djerba accordingly.
+- Other versions of Linux are not supported but may be compatible.
 - Limited testing of Djerba has successfully been carried out on MacOS.
 - Djerba has *not* been tested on Microsoft Windows, and issues are likely to occur.
 
+.. _Ubuntu 20.04 LTS : https://releases.ubuntu.com/focal/
 .. _Ubuntu 22.04 LTS : https://releases.ubuntu.com/jammy/
 
 Software
@@ -57,12 +59,13 @@ The core functions of Djerba are written in Python, and installed using standard
 
 Python installation is covered in the `official Python documentation`_, in particular the `Python Packaging User Guide`_. You may wish to use a `Python virtual environment`_ to install Djerba without affecting your system Python directories.
 
-From a download or clone of the Djerba repository, simply run ``pip3 install .``. This will install Djerba and all its Python dependencies.
+From a download or clone of the `Djerba repository`_, simply run ``pip3 install .``. This will install Djerba and all its Python dependencies.
 
 Djerba has a `setup.py script`_ which specifies exactly what is installed.
 
 Note that Djerba plugins may contain R scripts and other non-Python code. Installing with ``pip3`` *will* copy these files to the installation directory, but *will not* install non-Python dependencies such as R libraries. Any such dependencies must be installed separately by the user. Consult documentation for individual plugins for details.
 
+.. _Djerba repository: https://github.com/oicr-gsi/djerba/tree/main
 .. _official Python documentation: https://docs.python.org/3/
 .. _Python Packaging User Guide: https://packaging.python.org/en/latest/
 .. _Python virtual environment: https://docs.python.org/3/library/venv.html
