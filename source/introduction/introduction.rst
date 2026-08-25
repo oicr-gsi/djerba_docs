@@ -39,7 +39,7 @@ Djerba is open-source and we encourage its use beyond OICR. For example, CGI is 
 Why was Djerba developed?
 =========================
 
-Bioinformatics analysis typically consists of a pipeline made up of multiple workflows, with output in structured data files (for example: the `ICGC-ARGO`_ pipeline). The data may be in general-purpose formats such as `TSV`_ or `JSON`_, or more specialized ones such as `BED`_ or `VCF`_. Pipeline outputs represent a comprehensive analysis; but relevant information is split across multiple output files, and the files themselves are not easily human-readable.
+Bioinformatics analysis typically consists of a pipeline made up of multiple workflows, with output in structured data files (for example: the `ICGC-ARGO`_ pipeline). The data may be in general-purpose formats such as `TSV`_ or `JSON`_, or more specialized ones such as `BED`_ or `VCF`_. Pipeline outputs are a comprehensive source of information; but they are not easily read by humans, and key facts are split across multiple output files.
 
 The purpose of `Djerba`_ is to produce a *report*, accomplishing three main tasks:
   1. *Collate:* Gather information from multiple files into a self-contained document.
@@ -91,18 +91,22 @@ The core Djerba code is written in `Python`_. Plugins have a common structure, w
 .. _plugins: https://github.com/oicr-gsi/djerba/tree/main/src/lib/djerba/plugins
 .. _R: https://www.r-project.org/
 
-Where should I go next?
+.. Can I write my own plugins?
+   Yes! See the Developer Guide for details.
+
+
+What should I read next?
 ========================
 
-The How Djerba Works section covers key concepts and terminology. We recommend it as a starting point for all Djerba users.
+:doc:`../how_djerba_works/how_djerba_works` covers key concepts and terminology. We recommend it as a starting point for all Djerba users.
 
-The User Guide describes how to install Djerba, and run existing plugins to produce reports.
+The :doc:`../user_guide/user_guide` describes how to install Djerba, and run existing plugins to produce reports.
 
 .. TODO We encourage users to write their own plugins, as described in the Developer Guide.
 
 .. TODO The Component Reference has detailed descriptions of plugins and other components of Djerba, used for clinical reporting at OICR.
 
-Finally, the Contact section has contact links for the Djerba developers, and some brief notes on development policy.
+:doc:`../contact/contact` includes how to reach the Djerba developers, and some brief notes on development policy.
 
 
 Copyright and Licensing

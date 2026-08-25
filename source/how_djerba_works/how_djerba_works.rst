@@ -70,8 +70,10 @@ Djerba is run under a `Linux`_ operating system. It makes use of Linux concepts 
 .. _environment variables: https://wiki.archlinux.org/title/Environment_variables
 
 
-The ``djerba.py`` Script
-------------------------
+.. _functions-of-djerba:
+
+Functions of Djerba
+-------------------
 
 The main user interface for Djerba is a command-line script: ``djerba.py``
 
@@ -167,25 +169,32 @@ Packages which Djerba will search for plugins are configured as a colon-separate
 
 .. TODO See the Developer's Guide for more details
 
-Component Names
----------------
+Component Identifiers
+---------------------
 
-Djerba components exist within a *name space*. If two components have the same name, they cannot be loaded at the same time.
+The main name for each Djerba component is known as its *identifier*. Djerba components exist within a name space -- if two components have the same identifier, they cannot be loaded at the same time.
 
-The name of a component is closely related to the Python `package hierarchy`_. A Python package name represents a directory hierarchy, with directory levels separated by dots ``.``.
+The identifier is closely related to the `Python package`_ which contains the component code. A Python package name represents a directory hierarchy, with directory levels separated by dots ``.``.
 
-For example, the Python package ``enterprise.plugins.wgts.snv_indel`` may contain a plugin denoted by ``wgts.snv_indel``. Breaking this down in more detail:
+For example, the Python package ``enterprise.plugins.wgts.snv_indel`` may contain a plugin with identifier ``wgts.snv_indel``. **Table 2** breaks this down in more detail.
 
-1. ``enterprise``: Top-level package name. Must appear in ``DJERBA_PACKAGES`` for the plugin to be loaded at runtime.
-2. ``plugins``: Second-level package name. Djerba plugins must have ``plugins`` as the second-level name (and similarly for helpers and mergers).
-3. ``wgts``: Subdirectory, if any. A plugin may simply be located in the ``plugins`` directory, or it may be under one or more subdirectories.
-4. ``snv_indel``: The name of the plugin package.
+============== ===========
+Item           Description
+============== ===========
+``enterprise`` Top-level package name. Must appear in ``DJERBA_PACKAGES`` for the plugin to be loaded at runtime.
+``plugins``    Second-level package name. Djerba plugins must have ``plugins`` as the second-level name (and similarly for helpers and mergers).
+``wgts``       Subdirectory, if any. A plugin may simply be located in the ``plugins`` directory, or it may be under one or more subdirectories.
+``snv_indel``  The name of the plugin package.
+============== ===========
+
+**Table 2**. Levels in the Python package hierarchy for Djerba plugins, explained using the example ``enterprise.plugins.wgts.snv_indel``.
 
 The package names under the ``plugins`` directory, separated by dots, make up the plugin *identifier*. This is the name used in the INI file to run Djerba and generate a report. For example, the above plugin has the identifier ``wgts.snv_indel`` and will have a corresponding section header ``[wgts.snv_indel]`` in the INI file.
 
-Naming rules for helpers and mergers are similar, except their lowest-level package names *always* end with ``_helper`` and ``_merger`` respectively.
+Identifiers for helpers and mergers are similar, except their lowest-level package names *always* end with ``_helper`` and ``_merger`` respectively.
 
-.. _package hierarchy: https://docs.python.org/3/tutorial/modules.html#packages
+
+.. _Python package: https://docs.python.org/3/tutorial/modules.html#packages
 
 Plugin Loading Example
 ----------------------
@@ -200,4 +209,4 @@ Then Djerba will load the plugin ``enterprise.plugins.cnv`` in preference to ``d
 
 Specifically, the Djerba core code first checks the ``voyager`` package for a ``cnv`` plugin; when it does not find one, it checks ``enterprise``; having found the package ``enterprise.plugins.cnv``, it proceeds without examining the ``ds9`` package.
 
-Note that, as in the above example, the name ``djerba`` does not have to be in the ``DJERBA_PACKAGES`` list -- unless you want to load components from the main Djerba repository.
+.. note:: As in the above example, the name ``djerba`` does not have to be in the ``DJERBA_PACKAGES`` list -- unless you want to load components from the main Djerba repository.
