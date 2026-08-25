@@ -248,10 +248,10 @@ Running Djerba
 How to Produce a Report
 =======================
 
-The main command-line interface for Djerba is the ``djerba.py`` script, which has a number of subcommands or *modes* for different stages of the reporting process. The :doc:`How Djerba Works <../../how_djerba_works/how_djerba_works>` section has a :ref:`full description <functions-of-djerba>` of each mode and its purpose. In this section, we focus on the steps most commonly used to produce a report.
+The main command-line interface for Djerba is the ``djerba.py`` script, which has a number of subcommands or *modes* for different stages of the reporting process. The :doc:`How Djerba Works <../../how_djerba_works/how_djerba_works>` section has a :ref:`full description <user-interface>` of each mode and its purpose. In this section, we focus on the steps most commonly used to produce a report.
 
-``djerba.py Script Usage``
---------------------------
+Main Script Usage
+-----------------
 
 A user may run ``djerba.py --help`` for general options, or ``djerba.py $MODE --help`` for specific instructions on a given mode.
 
@@ -261,9 +261,18 @@ The general syntax is as follows:
 
    djerba.py [logging options] [mode name] [mode options]
 
+Logging options control status reports from the Djerba program. Djerba follows standard `software logging`_ conventions and formats. Default behaviour is to print warnings and error messages only. More detail is provided by the "verbose" option, and even more by "debug". The ``--log-path`` option may be used to write log output to a file instead of printing to the terminal.
 
+The modes are listed in :ref:`How Djerba Works <user-interface>`. The most commonly used ones are:
 
-Example session
+* **setup**: Prepare an INI config file to be completed by the user
+* **report**: Use the INI file to run Djerba's :ref:`production steps <production-steps>` in order and generate an HTML report, with optional PDF
+* **update**: Modify the summary text in a draft report, previously generated in ``report`` mode
+
+.. _software logging: https://docs.python.org/3/howto/logging.html#logging-basic-tutorial
+ 
+
+Example Session
 ---------------
 ==================================================================================== =============================================================================
 Command                                                                              Description

@@ -4,6 +4,10 @@ How Djerba Works
 
 In this section we describe key concepts used by Djerba to direct the reporting process.
 
+For details of how to run Djerba, see the :doc:`../../user_guide/user_guide`. This section describes more general principles, including *why* Djerba works the way it does.
+
+.. _production-steps:
+
 Production Steps
 ================
 
@@ -63,17 +67,16 @@ The core Djerba code is written in the `Python`_ programming language, and Djerb
 
 Djerba is run under a `Linux`_ operating system. It makes use of Linux concepts such as `environment variables`_ to configure program behaviour.
 
-
 .. _Python : https://www.python.org/
 .. _Python documentation : https://docs.python.org/3/
 .. _Linux: https://www.linux.org/
 .. _environment variables: https://wiki.archlinux.org/title/Environment_variables
 
 
-.. _functions-of-djerba:
+.. _user-interface:
 
-Functions of Djerba
--------------------
+User Interface
+--------------
 
 The main user interface for Djerba is a command-line script: ``djerba.py``
 
