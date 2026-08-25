@@ -147,27 +147,17 @@ The order of sections in the HTML output is determined by ``render_priority``. W
 
 As in the above example, a component may depend on output from other components. A dependency may be implicit, and expressed in terms of runtime priorities. Djerba also supports explicit dependencies. Similarly to the priority configuration, a plugin has INI parameters ``depends_configure`` and ``depends_extract``, both of which accept a comma-separated list of component names. (Plugins intentionally *do not* have a ``depends_render`` parameter, because the render step requires complete JSON input to be supplied at runtime.)
 
-Identifiers
------------
+Finding and Loading Components
+==============================
 
-
-Each Djerba component has an *identifier*. This is a string used as the main name of the component.
-
-Plugin identifiers may be (almost) any combination of letters, numbers, and underscores. They may include dots ``.`` to indicate a `package hierarchy`_. Helper identifiers *always* end with the string ``_helper``, while merger identifiers *always* end with the string ``_merger``.
-
-.. _package hierarchy: https://docs.python.org/3/tutorial/modules.html#packages
-
-.. TODO See the Developer's Guide for more details
-
-
-Component Locations
-===================
+The Top-Level Package
+---------------------
 
 Djerba loads its components from `packages`_ available to the `Python interpreter`_.
 
-The default behaviour is to load components from a package named ``djerba``. This is the Python package which contains the core Djerba code, as well as a number of plugins used at OICR. Plugins may be located one or more levels below the top-level package, for example ``djerba.plugins.fusion`` (a fusion plugin) or ``djerba.plugins.tar.sample`` (a plugin to process sample information for targeted sequencing).
+The default behaviour is to load components from a package named ``djerba``. This is the Python package which contains the core Djerba code, as well as a number of plugins used at OICR.
 
-Djerba supports additional packages, allowing custom components to be kept in any location of the user's choice.
+Djerba supports additional packages, allowing custom components to be maintained in their own software repositories.
 
 Packages which Djerba will search for plugins are configured as a colon-separated list, kept in the environment variable ``DJERBA_PACKAGES``. Djerba resolves packages by traversing the list from left to right. (As with any Python package, the code must be installed and visible on the `PYTHONPATH`_ environment variable.)
 
@@ -175,8 +165,30 @@ Packages which Djerba will search for plugins are configured as a colon-separate
 .. _Python interpreter: https://docs.python.org/3/tutorial/interpreter.html
 .. _PYTHONPATH: https://docs.python.org/3/using/cmdline.html#envvar-PYTHONPATH
 
-``DJERBA_PACKAGES`` Example
----------------------------
+.. TODO See the Developer's Guide for more details
+
+Component Names
+---------------
+
+Djerba components exist within a *name space*. If two components have the same name, they cannot be loaded at the same time.
+
+The name of a component is closely related to the Python `package hierarchy`_. A Python package name represents a directory hierarchy, with directory levels separated by dots ``.``.
+
+For example, the Python package ``enterprise.plugins.wgts.snv_indel`` may contain a plugin denoted by ``wgts.snv_indel``. Breaking this down in more detail:
+
+1. ``enterprise``: Top-level package name. Must appear in ``DJERBA_PACKAGES`` for the plugin to be loaded at runtime.
+2. ``plugins``: Second-level package name. Djerba plugins must have ``plugins`` as the second-level name (and similarly for helpers and mergers).
+3. ``wgts``: Subdirectory, if any. A plugin may simply be located in the ``plugins`` directory, or it may be under one or more subdirectories.
+4. ``snv_indel``: The name of the plugin package.
+
+The package names under the ``plugins`` directory, separated by dots, make up the plugin *identifier*. This is the name used in the INI file to run Djerba and generate a report. For example, the above plugin has the identifier ``wgts.snv_indel`` and will have a corresponding section header ``[wgts.snv_indel]`` in the INI file.
+
+Naming rules for helpers and mergers are similar, except their lowest-level package names *always* end with ``_helper`` and ``_merger`` respectively.
+
+.. _package hierarchy: https://docs.python.org/3/tutorial/modules.html#packages
+
+Plugin Loading Example
+----------------------
 
 Suppose we have the following:
 
