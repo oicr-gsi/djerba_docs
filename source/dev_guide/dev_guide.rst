@@ -17,5 +17,6 @@ A helper identifier is similar, but **must** end with the substring ``_helper``.
 
 A merger identifier is similar, but **must** end with the substring ``_merger``.
 
+.. _package hierarchy: https://docs.python.org/3/tutorial/modules.html#packages
 .. _Python name token: https://docs.python.org/3/reference/lexical_analysis.html#names-identifiers-and-keywords
 
