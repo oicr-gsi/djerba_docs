@@ -4,7 +4,7 @@ How Djerba Works
 
 In this section we describe key concepts used by Djerba to direct the reporting process.
 
-For details of how to run Djerba, see the :doc:`../../user_guide/user_guide`. This section describes more general principles, including *why* Djerba works the way it does.
+For details of how to run Djerba, see the :doc:`../../user_guide/user_guide`. This section describes more general principles of operation.
 
 .. _production-steps:
 
@@ -146,11 +146,13 @@ Runtime Priority and Dependencies
 
 Djerba has a concept of *priority*, to determine the order in which components are executed at runtime.
 
-Each component has INI configuration parameters ``configure_priority``, ``extract_priority``, and ``render_priority``, which respectively determine priority for the configure, extract, and render steps. Priority order is resolved from lowest to highest number: Priority 1 runs before priority 2, and so on.
+Each component has INI configuration parameters ``configure_priority``, ``extract_priority``, and ``render_priority``, which respectively determine priority for the configure, extract, and render steps. Priority order is resolved from lowest to highest number: Priority 100 runs before priority 200, and so on. (Djerba development has an informal convention of setting priorities with an increment of 100.)
 
 The order of sections in the HTML output is determined by ``render_priority``. We may want the configure or extract order to be different from the render order. For example, a *merger* component may be used to deduplicate and summarize therapies identified by multiple plugins. We want to run the merger near the *end* of the extract step, so input from upstream plugins is available. But we may wish to have the merger output near the *beginning* of the combined HTML document. Having separate priority parameters enables us to do this.
 
 As in the above example, a component may depend on output from other components. A dependency may be implicit, and expressed in terms of runtime priorities. Djerba also supports explicit dependencies. Similarly to the priority configuration, a plugin has INI parameters ``depends_configure`` and ``depends_extract``, both of which accept a comma-separated list of component names. (Plugins intentionally *do not* have a ``depends_render`` parameter, because the render step requires complete JSON input to be supplied at runtime.)
+
+.. _finding_loading_components:
 
 Finding and Loading Components
 ==============================
@@ -213,3 +215,61 @@ Then Djerba will load the plugin ``enterprise.plugins.cnv`` in preference to ``d
 Specifically, the Djerba core code first checks the ``voyager`` package for a ``cnv`` plugin; when it does not find one, it checks ``enterprise``; having found the package ``enterprise.plugins.cnv``, it proceeds without examining the ``ds9`` package.
 
 .. note:: As in the above example, the name ``djerba`` does not have to be in the ``DJERBA_PACKAGES`` list -- unless you want to load components from the main Djerba repository.
+
+Example JSON Output
+====================
+
+Djerba writes each report in a machine-readable JSON format, in addition to human-readable HTML and PDF. We can demonstrate the output format with a simple example.
+
+The minimal valid INI configuration file for Djerba is:
+
+::
+
+   [core]
+
+That's all! The ``[core]`` component is required for all reports, and we have not specified any others.
+
+Generating a report with the above config does not write any HTML or PDF output, because those are produced by plugins. However, it does write JSON output like this:
+
+::
+
+   {
+    "core": {
+        "author": "CGI Author",
+        "document_config": "document_config.json",
+        "report_id": "OICR-CGI-7ec4b11d2007477faa7935d0a09e6fb7",
+        "core_version": "1.13.0",
+        "extract_time": "2026-08-26_16:58:55 -0400"
+    },
+    "plugins": {},
+    "mergers": {},
+    "config": {
+        "core": {
+            "attributes": "",
+            "depends_configure": "",
+            "depends_extract": "",
+            "configure_priority": "100",
+            "extract_priority": "100",
+            "render_priority": "100",
+            "author": "Iain Bancarz",
+            "report_id": "OICR-CGI-7ec4b11d2007477faa7935d0a09e6fb7",
+            "report_version": "1",
+            "input_params": "input_params.json",
+            "document_config": "document_config.json"
+        }
+    },
+    "html_cache": {}
+
+While the document does not contain any data for rendering, it does have some basic information on the report:
+
+* **author**: The name of the report author, in this case a default placeholder
+* **document_config**: A configuration file used for document generation
+* **report_id**: An automatically generated placeholder ID for the report
+* **core_version**: Version number of the Djerba core software
+* **extract_time**: Time that the extract step was run
+
+This is followed by empty objects for plugin and merger output. Then, it has the set of config parameters used to generate the report. Since we did not specify any paremeters for ``[core]``, all of the values reported in the JSON are defaults. Helper components have no corresponding output object, because they do not generate HTML output; they can only write files to the report workspace, for use by plugins or helpers. Any helper components used *do* appear in the ``config`` object in the JSON document.
+
+Notice that we have ``depends`` and ``priority`` parameters. The ``core`` component, by definition, has no dependencies; and it has priority 100, because we want it to run before any other components.
+
+Finally, we see the ``html_cache`` section. In a report with HTML output, this would be populated to allow easier regeneration of the report in the "update" mode of the main ``djerba.py`` script.

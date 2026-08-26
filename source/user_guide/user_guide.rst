@@ -35,6 +35,7 @@ Software
 
 - `Python`_ version 3.13 or greater (at time of writing, if in doubt consult the `setup script`_).
 - The `wkhtmltopdf`_ utility is required for PDF conversion.
+- *Optional*: :ref:`Apache CouchDB <couchdb-setup>` may be used for report archiving
 
 .. _Python: https://www.python.org/downloads/
 .. _setup script: https://github.com/oicr-gsi/djerba/blob/main/setup.py
@@ -140,7 +141,7 @@ Djerba uses a number of `environment variables`_ for configuration. We recommend
 +---------------------------+----------------------+----------+----------------------------------------------------------------------------------+
 | ``DJERBA_CORE_HTML_DIR``  | Directory            | No       | Location of templates and stylesheets for core HTML rendering                    |
 +---------------------------+----------------------+----------+----------------------------------------------------------------------------------+
-| ``DJERBA_PACKAGES``       | Colon-separated list | Yes      | Names of top-level Djerba packages; see [external plugins](FIXME)                |
+| ``DJERBA_PACKAGES``       | Colon-separated list | Yes      | Names of top-level Djerba packages; see :ref:`finding_loading_components`        |
 +---------------------------+----------------------+----------+----------------------------------------------------------------------------------+
 | ``DJERBA_PRIVATE_DIR``    | Directory            | Yes      | Location of "private" files.                                                     |
 +---------------------------+----------------------+----------+----------------------------------------------------------------------------------+
@@ -244,14 +245,72 @@ The default versions of these files have the OICR branding and colour scheme. Th
 Running Djerba
 **************
 
-
-How to Produce a Report
+Introduction
 =======================
 
 The main command-line interface for Djerba is the ``djerba.py`` script, which has a number of subcommands or *modes* for different stages of the reporting process. The :doc:`How Djerba Works <../../how_djerba_works/how_djerba_works>` section has a :ref:`full description <user-interface>` of each mode and its purpose. In this section, we focus on the steps most commonly used to produce a report.
 
+
+The INI Configuration File
+==========================
+
+Parameters for a report are given to Djerba using a configuration file in INI format.
+
+The INI format consists of one or more *sections*. Each section has a header in square brackets, followed by zero or more key/value pairs, written in the form ``key = value``.
+
+
+
+The ``core`` component is always required. Users can include additional components as needed; each one has a section in the INI file. While the section header is always required, a component does not necessarily need to have any key/value pairs explicitly specified, as they may be filled in by default values.
+
+
+
+
+Initializing the INI File
+-------------------------
+.. TODO define core INI parameters here
+
+.. TODO add a note on the pre-populate option
+
+
+
+Completing the INI File
+-----------------------
+
+To configure the INI file for Djerba, simply fill in appropriate values for the named parameters. Many parameters receive default values, so the INI file completed by the user can be quite compact.
+
+Example
+-------
+
+The following is a `test INI file`_ from the Djerba repository:
+
+::
+
+   [core]
+   report_id = demo_report
+   author = Test Author
+
+   [demo1]
+   question = Who wrote Romeo and Juliet?
+
+   [demo2]
+   question = question.txt
+   demo2_param = The Pacific Ocean
+
+The ``[core]`` section sets parameters for the Djerba ``core`` component, which is responsible for loading other components and executing them in the correct order. We also have parameters for two plugins, ``demo1`` and ``demo2``, which are installed as part of the main Djerba repository.
+
+Having completed the INI, we can use it to generate a report as follows:
+
+::
+
+   djerba.py report -i config.ini -o . -p
+
+The above command will write output to the current working directory, including a PDF file (enabled by the ``-p`` option).
+
+.. _test INI file: https://github.com/oicr-gsi/djerba/blob/main/test-e2e/data/config.ini
+
+
 Main Script Usage
------------------
+=================
 
 A user may run ``djerba.py --help`` for general options, or ``djerba.py $MODE --help`` for specific instructions on a given mode.
 
@@ -286,21 +345,28 @@ Command                                                                         
 
 **Table 3**: Example Djerba session, with explanation of each step.
 
-Configuring the INI File
-========================
-
-TODO Example goes here
+.. TODO Other command-line scripts installed with Djerba are currently deprecated or of use primarily to developers. See the dev guide.
 
 
+****************************
+Appendix: Variant Annotation
+****************************
 
-Other Command-Line Scripts
-==========================
+A key function of Djerba is *annotation* of genomic variants, to determine which ones are clinically relevant. This is done by querying a database of variants; several such databases are available.
 
-Other command-line scripts installed with Djerba include:
+Annotation is handled by individual plugins, not the core Djerba code. This means Djerba is not committed to any particular method of annotation, and plugin authors may use any resources they see fit.
 
-- [generate_ini.py](https://github.com/oicr-gsi/djerba/blob/main/src/bin/generate_ini.py): Generate a "blank" INI file for a named list of Djerba components. For regular use, this has been superseded by the `setup` mode of `djerba.py`. Retained for use by plugin developers.
-- [mini_djerba.py](https://github.com/oicr-gsi/djerba/blob/main/src/bin/mini_djerba.py): Simplified script to update patient info and summary text in a Djerba report. Currently not supported, may be revived at a future date.
-- [update_oncokb_cache.py](https://github.com/oicr-gsi/djerba/blob/main/src/bin/update_oncokb_cache.py): Update an offline cache of variant annotation, used for testing.
-- [validate_plugin_json.py](https://github.com/oicr-gsi/djerba/blob/main/src/bin/validate_plugin_json.py): Check if plugin output is valid according to the Djerba JSON schema. Intended for plugin developers.
+Clinical reporting at OICR uses `OncoKB`_, a comprehensive oncology annotation resource maintained by `Memorial Sloan Kettering Cancer Center`_. Djerba includes code to support `annotation with OncoKB`_.
 
-Run any script with `-h/--help` for details.
+OncoKB annotation with OICR Djerba plugins requires:
+
+* Installation of the `oncokb-annotator`_ software package, version >=4.0.0
+* A valid OncoKB access token:
+  
+  * Plugins read the token path from the environment variable ``ONCOKB_TOKEN``
+  * To obtain a token, contact the OncoKB administrators.
+
+.. _OncoKB: https://www.oncokb.org/
+.. _Memorial Sloan Kettering Cancer Center: https://www.mskcc.org/
+.. _annotation with OncoKB: https://github.com/oicr-gsi/djerba/tree/main/src/lib/djerba/util/oncokb
+.. _oncokb-annotator: https://github.com/oncokb/oncokb-annotator
