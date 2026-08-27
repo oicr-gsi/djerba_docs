@@ -4,6 +4,10 @@ How Djerba Works
 
 In this section we describe key concepts used by Djerba to direct the reporting process.
 
+For details of how to run Djerba, see the :doc:`../../user_guide/user_guide`. This section describes more general principles of operation.
+
+.. _production-steps:
+
 Production Steps
 ================
 
@@ -63,15 +67,16 @@ The core Djerba code is written in the `Python`_ programming language, and Djerb
 
 Djerba is run under a `Linux`_ operating system. It makes use of Linux concepts such as `environment variables`_ to configure program behaviour.
 
-
 .. _Python : https://www.python.org/
 .. _Python documentation : https://docs.python.org/3/
 .. _Linux: https://www.linux.org/
 .. _environment variables: https://wiki.archlinux.org/title/Environment_variables
 
 
-The ``djerba.py`` Script
-------------------------
+.. _user-interface:
+
+User Interface
+--------------
 
 The main user interface for Djerba is a command-line script: ``djerba.py``
 
@@ -141,33 +146,25 @@ Runtime Priority and Dependencies
 
 Djerba has a concept of *priority*, to determine the order in which components are executed at runtime.
 
-Each component has INI configuration parameters ``configure_priority``, ``extract_priority``, and ``render_priority``, which respectively determine priority for the configure, extract, and render steps. Priority order is resolved from lowest to highest number: Priority 1 runs before priority 2, and so on.
+Each component has INI configuration parameters ``configure_priority``, ``extract_priority``, and ``render_priority``, which respectively determine priority for the configure, extract, and render steps. Priority order is resolved from lowest to highest number: Priority 100 runs before priority 200, and so on. (Djerba development has an informal convention of setting priorities with an increment of 100.)
 
 The order of sections in the HTML output is determined by ``render_priority``. We may want the configure or extract order to be different from the render order. For example, a *merger* component may be used to deduplicate and summarize therapies identified by multiple plugins. We want to run the merger near the *end* of the extract step, so input from upstream plugins is available. But we may wish to have the merger output near the *beginning* of the combined HTML document. Having separate priority parameters enables us to do this.
 
 As in the above example, a component may depend on output from other components. A dependency may be implicit, and expressed in terms of runtime priorities. Djerba also supports explicit dependencies. Similarly to the priority configuration, a plugin has INI parameters ``depends_configure`` and ``depends_extract``, both of which accept a comma-separated list of component names. (Plugins intentionally *do not* have a ``depends_render`` parameter, because the render step requires complete JSON input to be supplied at runtime.)
 
-Identifiers
------------
+.. _finding_loading_components:
 
+Finding and Loading Components
+==============================
 
-Each Djerba component has an *identifier*. This is a string used as the main name of the component.
-
-Plugin identifiers may be (almost) any combination of letters, numbers, and underscores. They may include dots ``.`` to indicate a `package hierarchy`_. Helper identifiers *always* end with the string ``_helper``, while merger identifiers *always* end with the string ``_merger``.
-
-.. _package hierarchy: https://docs.python.org/3/tutorial/modules.html#packages
-
-.. TODO See the Developer's Guide for more details
-
-
-Component Locations
-===================
+The Top-Level Package
+---------------------
 
 Djerba loads its components from `packages`_ available to the `Python interpreter`_.
 
-The default behaviour is to load components from a package named ``djerba``. This is the Python package which contains the core Djerba code, as well as a number of plugins used at OICR. Plugins may be located one or more levels below the top-level package, for example ``djerba.plugins.fusion`` (a fusion plugin) or ``djerba.plugins.tar.sample`` (a plugin to process sample information for targeted sequencing).
+The default behaviour is to load components from a package named ``djerba``. This is the Python package which contains the core Djerba code, as well as a number of plugins used at OICR.
 
-Djerba supports additional packages, allowing custom components to be kept in any location of the user's choice.
+Djerba supports additional packages, allowing custom components to be maintained in their own software repositories.
 
 Packages which Djerba will search for plugins are configured as a colon-separated list, kept in the environment variable ``DJERBA_PACKAGES``. Djerba resolves packages by traversing the list from left to right. (As with any Python package, the code must be installed and visible on the `PYTHONPATH`_ environment variable.)
 
@@ -175,8 +172,37 @@ Packages which Djerba will search for plugins are configured as a colon-separate
 .. _Python interpreter: https://docs.python.org/3/tutorial/interpreter.html
 .. _PYTHONPATH: https://docs.python.org/3/using/cmdline.html#envvar-PYTHONPATH
 
-``DJERBA_PACKAGES`` Example
----------------------------
+.. TODO See the Developer's Guide for more details
+
+Component Identifiers
+---------------------
+
+The main name for each Djerba component is known as its *identifier*. Djerba components exist within a name space -- if two components have the same identifier, they cannot be loaded at the same time.
+
+The identifier is closely related to the `Python package`_ which contains the component code. A Python package name represents a directory hierarchy, with directory levels separated by dots ``.``.
+
+For example, the Python package ``enterprise.plugins.wgts.snv_indel`` may contain a plugin with identifier ``wgts.snv_indel``. **Table 2** breaks this down in more detail.
+
+============== ===========
+Item           Description
+============== ===========
+``enterprise`` Top-level package name. Must appear in ``DJERBA_PACKAGES`` for the plugin to be loaded at runtime.
+``plugins``    Second-level package name. Djerba plugins must have ``plugins`` as the second-level name (and similarly for helpers and mergers).
+``wgts``       Subdirectory, if any. A plugin may simply be located in the ``plugins`` directory, or it may be under one or more subdirectories.
+``snv_indel``  The name of the plugin package.
+============== ===========
+
+**Table 2**. Levels in the Python package hierarchy for Djerba plugins, explained using the example ``enterprise.plugins.wgts.snv_indel``.
+
+The package names under the ``plugins`` directory, separated by dots, make up the plugin *identifier*. This is the name used in the INI file to run Djerba and generate a report. For example, the above plugin has the identifier ``wgts.snv_indel`` and will have a corresponding section header ``[wgts.snv_indel]`` in the INI file.
+
+Identifiers for helpers and mergers are similar, except their lowest-level package names *always* end with ``_helper`` and ``_merger`` respectively.
+
+
+.. _Python package: https://docs.python.org/3/tutorial/modules.html#packages
+
+Plugin Loading Example
+----------------------
 
 Suppose we have the following:
 
@@ -188,4 +214,180 @@ Then Djerba will load the plugin ``enterprise.plugins.cnv`` in preference to ``d
 
 Specifically, the Djerba core code first checks the ``voyager`` package for a ``cnv`` plugin; when it does not find one, it checks ``enterprise``; having found the package ``enterprise.plugins.cnv``, it proceeds without examining the ``ds9`` package.
 
-Note that, as in the above example, the name ``djerba`` does not have to be in the ``DJERBA_PACKAGES`` list -- unless you want to load components from the main Djerba repository.
+.. note:: As in the above example, the name ``djerba`` does not have to be in the ``DJERBA_PACKAGES`` list -- unless you want to load components from the main Djerba repository.
+
+Input and Output Examples
+=========================
+
+Minimal Example
+---------------
+
+Djerba writes each report in a machine-readable JSON format, in addition to human-readable HTML and PDF. We can demonstrate the output format with a simple example.
+
+The minimal valid INI configuration file for Djerba is:
+
+::
+
+   [core]
+
+That's all! The ``[core]`` component is required for all reports, and we have not specified any others.
+
+Generating a report with the above config does not write any HTML or PDF output, because those are produced by plugins. However, it does write JSON output like this, to a file named ``OICR-CGI-7ec4b11d2007477faa7935d0a09e6fb7_report.json``.
+
+::
+
+   {
+    "core": {
+        "author": "CGI Author",
+        "document_config": "document_config.json",
+        "report_id": "OICR-CGI-7ec4b11d2007477faa7935d0a09e6fb7",
+        "core_version": "1.13.0",
+        "extract_time": "2026-08-26_16:58:55 -0400"
+    },
+    "plugins": {},
+    "mergers": {},
+    "config": {
+        "core": {
+            "attributes": "",
+            "depends_configure": "",
+            "depends_extract": "",
+            "configure_priority": "100",
+            "extract_priority": "100",
+            "render_priority": "100",
+            "author": "CGI Author",
+            "report_id": "OICR-CGI-7ec4b11d2007477faa7935d0a09e6fb7",
+            "report_version": "1",
+            "input_params": "input_params.json",
+            "document_config": "document_config.json"
+        }
+    },
+    "html_cache": {}
+
+Notice that the output filename is the ``report_id`` in the JSON, with the suffix ``_report.json``. No ID was specified, so Djerba falls back to a randomly generated `unique identifier`_.
+
+.. _unique identifier: https://docs.python.org/3/library/uuid.html
+
+While the document does not contain any data for rendering, it does have some basic information on the report:
+
+* **author**: The name of the report author, in this case a default placeholder
+* **document_config**: A configuration file used for document generation
+* **report_id**: An automatically generated placeholder ID for the report
+* **core_version**: Version number of the Djerba core software
+* **extract_time**: Time the extract step was run
+
+This is followed by empty objects for plugin and merger output. Then, it has the set of config parameters used to generate the report. Since we did not specify any parameters for ``[core]``, all of the values reported in the JSON are defaults. Helper components have no corresponding output object, because they do not generate HTML output; they can only write files to the report workspace, for use by plugins or helpers. Any helper components used *do* appear in the ``config`` object in the JSON document.
+
+Notice that we have ``depends`` and ``priority`` parameters. The ``core`` component, by definition, has no dependencies; and it has priority 100, because we want it to run before any other components. (Remember that priorities are resolved in _ascending_ order, and by convention they are incremented by 100; so 100 runs before 200, 300 and so on.)
+
+Finally, we see the ``html_cache`` section. In a report with HTML output, this would be populated to allow easier regeneration of the report in the "update" mode of the main ``djerba.py`` script.
+
+Setting INI Parameters
+----------------------
+
+Let us take a step up from the minimal example, by setting parameters in ``[core]``. If we use the INI file:
+
+::
+
+   [core]
+   report_id = demo
+   author = Dr. Beverly Crusher
+
+
+The report is now written to ``demo_report.json`` instead of a randomly generated filename, and the parameters propagate through:
+
+::
+
+   {
+    "core": {
+        "author": "Dr. Beverly Crusher",
+        "document_config": "document_config.json",
+        "report_id": "demo",
+        "core_version": "1.13.0",
+        "extract_time": "2026-08-26_17:58:23 -0400"
+    },
+    ... [further output truncated]
+
+
+Our next step is to add some plugins and produce a report.
+
+Configuring Plugins
+-------------------
+
+To use a plugin, we simply add its identifier and any needed parameters to the INI file. For example:
+
+::
+
+   [core]
+   report_id = demo
+   author = Dr. Beverly Crusher
+
+   [gene_information_merger]
+
+   [demo2]
+   question = question.txt
+   demo2_param = The Pacific Ocean
+
+This uses components from the main Djerba repository: Specifically the ``demo2`` plugin, which as the name suggests is a simple plugin for demonstration purposes; and the ``gene_information_merger``, which is used in production to deduplicate and report information on genes of interest.
+
+Here is part of the JSON generated:
+
+::
+
+   {
+    "core": {
+        "author": "Dr. Beverly Crusher",
+        "document_config": "document_config.json",
+        "report_id": "demo",
+        "core_version": "1.13.0",
+        "extract_time": "2026-08-27_09:42:26 -0400"
+    },
+    "plugins": {
+        "demo2": {
+            "plugin_name": "demo2 plugin",
+            "version": "1.0.0",
+            "priorities": {
+                "configure": 300,
+                "extract": 300,
+                "render": 300
+            },
+            "attributes": [
+                "clinical"
+            ],
+            "merge_inputs": {
+                "gene_information_merger": [
+                    {
+                        "Gene": "PIK3CA",
+                        "Gene_URL": "https://www.oncokb.org/gene/PIK3CA",
+                        "Chromosome": "3q26.32",
+                        "Summary": "PIK3CA, the catalytic subunit of PI3-kinase, is frequently mutated in a diverse range of cancers including breast, endometrial and cervical cancers."
+                    },
+                    {
+                        "Gene": "PIK3CB",
+                        "Gene_URL": "https://www.oncokb.org/gene/PIK3CB",
+                        "Chromosome": "3q22.3",
+                        "Summary": "PIK3CB, a catalytic subunit of PI3-kinase, is altered by amplification or mutation in various cancer types."
+                    }
+                ]
+            },
+            "results": {
+                "answer": "The Pacific Ocean",
+                "question": "What do you get if you multiply six by nine?"
+            }
+        }
+    },
+    ... [further output truncated]
+
+.. note:: The JSON output from plugins includes base64-encoded data blocks, and is not intended to be human-readable in its raw state. If manually reviewing the JSON, we recommend opening it in a web browser or using a program such as `jq`_. Complete JSON output from the above demonstration is: :download:`demo_report.json` 
+
+.. _jq: https://jqlang.org/
+
+This time, we have also generated HTML and PDF output, in files ``demo_report.clinical.html`` and ``demo_report.clinical.pdf`` respectively. The output appears in **Figure 2**:
+
+
+.. image:: demo_pdf.png
+
+**Figure 2**: Simple demonstration of Djerba PDF output
+
+The document has a standard header and format for OICR clinical reports. We can also see a question and answer output by the plugin, and gene information output by the merger.
+
+.. note:: The ``demo2`` plugin has "clinical" in its ``attributes`` list; this means it uses clinical document templates and the string "clinical" appears in the HTML and PDF filenames. The "clinical" string does *not* appear in the JSON filename, because the clinical format is one of several which can be generated from a given JSON file.

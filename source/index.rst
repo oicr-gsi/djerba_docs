@@ -9,5 +9,6 @@ Djerba
    :caption: Documentation
 
    introduction/introduction
-   concepts/how_djerba_works
+   how_djerba_works/how_djerba_works
    user_guide/user_guide
+   contact/contact
