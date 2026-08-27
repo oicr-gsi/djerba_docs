@@ -265,8 +265,8 @@ The ``core`` component is always required. Users can include additional componen
 
 
 
-Initializing the INI File
--------------------------
+.. Initializing the INI File
+.. -------------------------
 .. TODO define core INI parameters here
 
 .. TODO add a note on the pre-populate option
@@ -346,6 +346,9 @@ Command                                                                         
 **Table 3**: Example Djerba session, with explanation of each step.
 
 .. TODO Other command-line scripts installed with Djerba are currently deprecated or of use primarily to developers. See the dev guide.
+
+.. TODO "advanced usage" section
+   covers variant annotation, full_config.ini, component attributes, etc.
 
 
 ****************************
