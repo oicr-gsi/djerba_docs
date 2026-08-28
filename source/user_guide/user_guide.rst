@@ -141,7 +141,8 @@ Djerba uses a number of `environment variables`_ for configuration. We recommend
 +---------------------------+----------------------+----------+----------------------------------------------------------------------------------+
 | ``DJERBA_CORE_HTML_DIR``  | Directory            | No       | Location of templates and stylesheets for core HTML rendering                    |
 +---------------------------+----------------------+----------+----------------------------------------------------------------------------------+
-| ``DJERBA_PACKAGES``       | Colon-separated list | Yes      | Names of top-level Djerba packages; see :ref:`finding_loading_components`        |
+| ``DJERBA_PACKAGES``       | Colon-separated list | No       | Names of top-level Djerba packages; see :ref:`finding_loading_components`.       |
+|                           |                      |          | Defaults to ``djerba``.                                                          |
 +---------------------------+----------------------+----------+----------------------------------------------------------------------------------+
 | ``DJERBA_PRIVATE_DIR``    | Directory            | Yes      | Location of "private" files.                                                     |
 +---------------------------+----------------------+----------+----------------------------------------------------------------------------------+
