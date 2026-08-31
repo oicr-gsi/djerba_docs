@@ -277,7 +277,7 @@ While the document does not contain any data for rendering, it does have some ba
 
 This is followed by empty objects for plugin and merger output. Then, it has the set of config parameters used to generate the report. Since we did not specify any parameters for ``[core]``, all of the values reported in the JSON are defaults. Helper components have no corresponding output object, because they do not generate HTML output; they can only write files to the report workspace, for use by plugins or helpers. Any helper components used *do* appear in the ``config`` object in the JSON document.
 
-Notice that we have ``depends`` and ``priority`` parameters. The ``core`` component, by definition, has no dependencies; and it has priority 100, because we want it to run before any other components. (Remember that priorities are resolved in _ascending_ order, and by convention they are incremented by 100; so 100 runs before 200, 300 and so on.)
+Notice that we have ``depends`` and ``priority`` parameters. The ``core`` component, by definition, has no dependencies; and it has priority 100, because we want it to run before any other components. (Remember that priorities are resolved in *ascending* order, and by convention they are incremented by 100; so 100 runs before 200, 300 and so on.)
 
 Finally, we see the ``html_cache`` section. In a report with HTML output, this would be populated to allow easier regeneration of the report in the "update" mode of the main ``djerba.py`` script.
 
@@ -377,8 +377,9 @@ Here is part of the JSON generated:
     },
     ... [further output truncated]
 
-.. note:: The JSON output from plugins includes base64-encoded data blocks, and is not intended to be human-readable in its raw state. If manually reviewing the JSON, we recommend opening it in a web browser or using a program such as `jq`_. Complete JSON output from the above demonstration is: :download:`demo_report.json` 
+.. note:: The JSON output from plugins includes `base64-encoded`_ data blocks, and is not intended to be human-readable in its raw state. If manually reviewing the JSON, we recommend opening it in a browser or using a program such as `jq`_. Complete JSON output from the above demonstration is: :download:`demo_report.json` 
 
+.. _base64-encoded: https://www.redhat.com/en/blog/base64-encoding
 .. _jq: https://jqlang.org/
 
 This time, we have also generated HTML and PDF output, in files ``demo_report.clinical.html`` and ``demo_report.clinical.pdf`` respectively. The output appears in **Figure 2**:
