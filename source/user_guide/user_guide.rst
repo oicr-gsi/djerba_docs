@@ -298,7 +298,7 @@ To configure the INI file for Djerba, simply fill in appropriate values for the 
 Pre-Population
 ^^^^^^^^^^^^^^
 
-A group of reports may share parameters, such as the project name and assay type. For convenience, the "configure" and "report" modes of the main Djerba script have a ``-p/--pre-populate`` option. This specifies a supplementary INI file with default configuration values. Any plugin parameters in the supplementary file, which are not otherwise specified, will be filled in as defaults.
+A group of reports may share parameters, such as the project name and assay type. For convenience, the "setup" mode of the main Djerba script has a ``-p/--pre-populate`` option. This specifies a supplementary INI file with default configuration values. When Djerba is run in "setup" mode to generate a new INI file, the plugin parameters in the supplementary file will be filled in as defaults.
 
 
 Example
