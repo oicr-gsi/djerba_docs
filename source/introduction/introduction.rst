@@ -91,9 +91,22 @@ The core Djerba code is written in `Python`_. Plugins have a common structure, w
 .. _plugins: https://github.com/oicr-gsi/djerba/tree/main/src/lib/djerba/plugins
 .. _R: https://www.r-project.org/
 
-.. Can I write my own plugins?
-   Yes! See the Developer Guide for details.
+Can I change the appearance of report output?
+=============================================
 
+Yes! See the :ref:`document-configuration` section for details of how to specify the HTML header, footer and stylesheet.
+
+Can I write my own plugins?
+===========================
+
+Yes! Our collaborators have successfully written plugins and deployed them to generate their own reports. When Djerba was originally developed, a high priority was making its structure as clear and straightforward as possible, to allow new plugins to be written and existing ones to be modified.
+
+In the future, we intend to add a "Developer's Guide" to this documentation. For now, the existing `Djerba plugins`_ provide a wealth of examples showing how it can be done.
+
+Please note Djerba is free software `licensed under GPL 3.0`_. There is *no warranty* for Djerba, and any software which copies or modifies code from Djerba is also affected by the terms of the license.
+
+.. _Djerba plugins: https://github.com/oicr-gsi/djerba/tree/main/src/lib/djerba/plugins
+.. _licensed under GPL 3.0: https://github.com/oicr-gsi/djerba/blob/main/LICENSE
 
 What should I read next?
 ========================

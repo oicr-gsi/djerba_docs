@@ -108,6 +108,8 @@ A user may run ``djerba.py --help`` for general options, or ``djerba.py $MODE --
 
 .. The user guide also details more specialized [command-line scripts](link_FIXME) used for report production.
 
+.. _modular-components:
+
 Modular Components
 ==================
 
@@ -140,6 +142,8 @@ Mergers
 ^^^^^^^
 
 Mergers take the output of multiple plugins, remove duplicates, and generate HTML output which is later converted to PDF. They are used to generate summaries of therapies or genes identified by plugins.
+
+.. _runtime-priority-and-dependencies:
 
 Runtime Priority and Dependencies
 ---------------------------------
@@ -218,6 +222,8 @@ Specifically, the Djerba core code first checks the ``voyager`` package for a ``
 
 Input and Output Examples
 =========================
+
+.. _minimal-example:
 
 Minimal Example
 ---------------

@@ -139,7 +139,8 @@ Djerba uses a number of `environment variables`_ for configuration. We recommend
 | ``DJERBA_BASE_DIR``       | Directory            | Yes      | Base directory where Djerba was installed.                                       |
 |                           |                      |          | Eg. ``/usr/lib/python3.13/site-packages/djerba``                                 |
 +---------------------------+----------------------+----------+----------------------------------------------------------------------------------+
-| ``DJERBA_CORE_HTML_DIR``  | Directory            | No       | Location of templates and stylesheets for core HTML rendering                    |
+| ``DJERBA_CORE_HTML_DIR``  | Directory            | No       | Location of templates and stylesheets for core HTML rendering.                   |
+|                           |                      |          | See :ref:`document-configuration`.                                               |
 +---------------------------+----------------------+----------+----------------------------------------------------------------------------------+
 | ``DJERBA_PACKAGES``       | Colon-separated list | No       | Names of top-level Djerba packages; see :ref:`finding_loading_components`.       |
 |                           |                      |          | Defaults to ``djerba``.                                                          |
@@ -175,10 +176,10 @@ This is a location where Djerba can read and write files to control application-
 
 .. _core-config-files:
 
-Core Configuration Files
-========================
+Global Configuration Files
+==========================
 
-Some core functions of Djerba are controlled using configuration files. These are distinct from the INI configuration file used to run Djerba and generate a report.
+Some functions and behaviour of Djerba are controlled using configuration files. These are distinct from the INI configuration file used to run Djerba and generate a report.
 
 All of these configuration files are optional. The archive config may be omitted if running with the ``--no-archive`` option. If the others are absent, Djerba will fall back to appropriate defaults. The files are summarized in **Table 2** and described in more detail below.
 
@@ -192,7 +193,7 @@ All of these configuration files are optional. The archive config may be omitted
 | HTML config      | CSS, JSON, HTML  | Templates and stylesheets for core HTML rendering                                |
 +------------------+------------------+----------------------------------------------------------------------------------+
 
-**Table 2**: Djerba core configuration files
+**Table 2**: Djerba global configuration files
 
 .. _archive-config:
 
@@ -212,6 +213,7 @@ The config format is as follows:
    address = my-djerba-server.example.com
    port = 1234
 
+.. _user-name-config:
 
 User Name Config
 ----------------
@@ -240,7 +242,7 @@ Djerba uses templates and stylesheets to control the overall look-and-feel of th
 
 The default versions of these files have the OICR branding and colour scheme. They are part of the `Djerba code repository`_, and are automatically copied to the Djerba installation directory. The user may set an alternate location for these files using the ``DJERBA_CORE_HTML_DIR``  :ref:`environment variable <environment-variables>`.
 
-.. _Djerba code repository: https://github.com/oicr-gsi/djerba/tree/main/src/lib/djerba/cor
+.. _Djerba code repository: https://github.com/oicr-gsi/djerba/tree/main/src/lib/djerba/core
 
 **************
 Running Djerba
@@ -255,23 +257,35 @@ The main command-line interface for Djerba is the ``djerba.py`` script, which ha
 The INI Configuration File
 ==========================
 
+Introduction
+------------
+
 Parameters for a report are given to Djerba using a configuration file in INI format.
 
 The INI format consists of one or more *sections*. Each section has a header in square brackets, followed by zero or more key/value pairs, written in the form ``key = value``.
 
-
-
 The ``core`` component is always required. Users can include additional components as needed; each one has a section in the INI file. While the section header is always required, a component does not necessarily need to have any key/value pairs explicitly specified, as they may be filled in by default values.
 
+.. _core-parameters:
 
+Core Parameters
+---------------
 
+The ``core`` component has some parameters shared with other Djerba components, such as :ref:`priority values <runtime-priority-and-dependencies>`. Parameters specific to ``core`` are as follows.
 
-.. Initializing the INI File
-.. -------------------------
-.. TODO define core INI parameters here
+==================== =======================================================================================================================
+Name                 Description
+==================== =======================================================================================================================
+``author``           Name of the report author. May have a default based on the Linux username. See: :ref:`user-name-config`
+``report_id``        Name for the report, used as a prefix for output files.
+``report_version``   Version number of the report. From time to time, a report may need to be re-released with amendments, which can be tracked with this parameter.
+``input_params``     Filename for input parameters. See: :ref:`input-params-file`
+``document_config``  Filename for document configuration parameters. See: :ref:`document-configuration-file`
+==================== =======================================================================================================================
 
-.. TODO add a note on the pre-populate option
-
+.. TODO Attributes
+.. TODO input params
+.. TODO document config
 
 
 Completing the INI File
@@ -279,8 +293,14 @@ Completing the INI File
 
 To configure the INI file for Djerba, simply fill in appropriate values for the named parameters. Many parameters receive default values, so the INI file completed by the user can be quite compact.
 
+Pre-Population
+^^^^^^^^^^^^^^
+
+A group of reports may share parameters, such as the project name and assay type. For convenience, the "configure" and "report" modes of the main Djerba script have a ``-p/--pre-populate`` option. This specifies a supplementary INI file with default configuration values. Any plugin parameters in the supplementary file, which are not otherwise specified, will be filled in as defaults.
+
+
 Example
--------
+^^^^^^^
 
 The following is a `test INI file`_ from the Djerba repository:
 
@@ -309,6 +329,8 @@ The above command will write output to the current working directory, including 
 
 .. _test INI file: https://github.com/oicr-gsi/djerba/blob/main/test-e2e/data/config.ini
 
+
+.. _main-script-usage:
 
 Main Script Usage
 =================
@@ -346,15 +368,21 @@ Command                                                                         
 
 **Table 3**: Example Djerba session, with explanation of each step.
 
-.. TODO Other command-line scripts installed with Djerba are currently deprecated or of use primarily to developers. See the dev guide.
+.. note:: A few other command-line scripts are installed with the Djerba Python package. They are not required for report production; all are currently deprecated and/or of use primarily to developers.
+
+.. TODO  See the dev guide.
 
 .. TODO "advanced usage" section
-   covers variant annotation, full_config.ini, component attributes, etc.
+   covers variant annotation, troubleshooting, full_config.ini, component attributes, input params, document config, etc.
 
+**************
+Advanced Usage
+**************
 
-****************************
-Appendix: Variant Annotation
-****************************
+This section covers advanced topics and configuration options.
+
+Variant Annotation
+==================
 
 A key function of Djerba is *annotation* of genomic variants, to determine which ones are clinically relevant. This is done by querying a database of variants; several such databases are available.
 
@@ -374,3 +402,102 @@ OncoKB annotation with OICR Djerba plugins requires:
 .. _Memorial Sloan Kettering Cancer Center: https://www.mskcc.org/
 .. _annotation with OncoKB: https://github.com/oicr-gsi/djerba/tree/main/src/lib/djerba/util/oncokb
 .. _oncokb-annotator: https://github.com/oncokb/oncokb-annotator
+
+.. _document-configuration:
+
+Document Configuration
+======================
+
+This section describes how to customize the appearance of Djerba's output. This is controlled by a combination of component attributes, and the document configuration file.
+
+.. _component-attributes:
+
+Component Attributes in the INI
+-------------------------------
+
+Every Djerba component has an ``attributes`` parameter in its INI section. By default, the permitted attributes are "clinical", "research", and "simple". These are labels applied to individual plugins, used at OICR to control different reporting types with distinct HTML stylesheets and formatting options.
+
+Most OICR plugins default to the "clinical" attribute, and use the corresponding format for a clinical report.
+
+.. note:: The ``attributes`` INI parameter should have the name of exactly one attribute -- either manually specified, or from a default for the plugin. Configuration of multiple attributes for a component in the same report is not supported. 
+
+
+.. _document-configuration-file:
+
+The Document Configuration File
+---------------------------------
+
+This is a file with a name specified by the :ref:`core component <core-parameters>`, defaulting to ``document_config.json``. It is located in the directory specified by the ``DJERBA_CORE_HTML_DIR`` :ref:`environment variable <environment-variables>`. 
+
+Each permitted :ref:`component attribute <component-attributes>` corresponds to a *document type*. Each document type has a header and footer file, and a `CSS stylesheet`_.
+
+.. _CSS stylesheet: https://www.w3schools.com/html/html_css.asp
+
+These are specified in ``document_config.json`` as follows:
+
+::
+
+   {
+    "document_types": ["clinical", "research", "simple"],
+    "document_settings": {
+	"clinical": {
+	    "document_header": "clinical_header.html",
+	    "document_footer": "clinical_footer.html",
+	    "stylesheet": "stylesheet.css"
+	    },
+	"research": {
+	    "document_header": "research_header.html",
+	    "document_footer": "research_footer.html",
+	    "stylesheet": "stylesheet.css"
+	    },
+	"simple": {
+	    "document_header": "simple_header.html",
+	    "document_footer": "footer.html",
+	    "stylesheet": "stylesheet.css"
+	    }	
+        }
+    }
+
+At runtime, if plugins in the INI config have more than one attribute, the final PDF outputs will be merged into a single document. The merged elements will appear in the same order as the ``document_types`` list in the document configuration file. For example, this can be used to add a "research" appendix to a "clinical" report.
+
+
+
+Additional Input and Output Files
+=================================
+
+.. _input-params-file:
+
+The Input Params File
+-----------------------
+
+Djerba :ref:`components <modular-components>` are able to read and write files in a shared *workspace*. The files exist in a directory specified at runtime to the main Djerba script. This enables information to be shared between different components.
+
+OICR plugins have the concept of an "input params helper", `for example in our WGTS assay`_. Recall that a helper component only writes files to the workspace, and does not generate JSON or HTML report output. The input params helper is given a priority order such that it runs before any other component. Its task is to collect information such as the donor and requisition identifiers, which may subsequently be used to query other resources and gather input data. It writes its output to a JSON file, called ``input_params.json`` by default.
+
+The input params helpers are specific to OICR and their use is optional. However, the ``core`` component required for all reports does have a parameter named ``input_params_file``. This is a hook used to populate the report ID. The core will use a manually specified report ID if one is present in the INI; if not, it will look for an input params file; if the file is not found, it will fall back to a randomly generated default ID.
+
+.. _for example in our WGTS assay: https://github.com/oicr-gsi/djerba/tree/main/src/lib/djerba/helpers/input_params_helper
+
+.. _full-config-file:
+
+The Full Config File
+--------------------
+
+The "configure" or "report" modes of the main Djerba script write a file called ``full_config.ini`` to the output directory. This is the fully-specified INI file generated by the configure step, including any default values which are in use. It may be useful for future reference or troubleshooting.
+
+
+Troubleshooting
+===============
+
+Djerba has been used to generate more than 2000 clinical reports at OICR (as of August 2026), and for the most part it runs smoothly. As with any software, users may experience issues from time to time, so we offer the following tips for troubleshooting.
+
+1. Ensure the core Djerba application is functional, for instance by running with a :ref:`minimal INI file <minimal-example>`.
+2. Consult the log output, by :ref:`running the main script <main-script-usage>` with ``--verbose`` or ``--debug`` enabled.
+3. Consult the :ref:`full config file <full-config-file>`, if any, to check all parameters are as expected.
+4. Check existing `issues on Github`_, to see if your issue is already known or has a workaround.
+5. You can :ref:`contact the Djerba developers <contact-us>`:
+   
+   a. Bug reports for general functions of Djerba are greatly appreciated, and we will do our best to fix them.
+   b. We will also try to advise on user-specific issues, but we regret our capacity for external support is limited.
+
+.. _issues on Github: https://github.com/oicr-gsi/djerba/issues
