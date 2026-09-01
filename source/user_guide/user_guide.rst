@@ -476,7 +476,26 @@ Djerba :ref:`components <modular-components>` are able to read and write files i
 
 OICR plugins have the concept of an "input params helper", `for example in our WGTS assay`_. Recall that a helper component only writes files to the workspace, and does not generate JSON or HTML report output. The input params helper is given a priority order such that it runs before any other component. Its task is to collect information such as the donor and requisition identifiers, which may subsequently be used to query other resources and gather input data. It writes its output to a JSON file, called ``input_params.json`` by default.
 
-The input params helpers are specific to OICR and their use is optional. However, the ``core`` component required for all reports does have a parameter named ``input_params_file``. This is a hook used to populate the report ID. The core will use a manually specified report ID if one is present in the INI; if not, it will look for an input params file; if the file is not found, it will fall back to a randomly generated default ID.
+The input params helpers are specific to OICR and their use is optional. However, the ``core`` component required for all reports does have a parameter named ``input_params_file``. This is a hook used to populate the report ID. The core will use a manually specified report ID if one is present in the INI; if not, it will look for an input params file with a ``requisition_id`` entry; if the file is not found, it will fall back to a randomly generated default ID.
+
+Here is an example ``input_params.json`` file:
+
+::
+
+   {
+    "donor": "PLACEHOLDER",
+    "study": "PLACEHOLDER",
+    "project": "PLACEHOLDER",
+    "oncotree_code": "CHOL",
+    "primary_cancer": "Cholangiocarcinoma",
+    "site_of_biopsy": "Liver",
+    "requisition_approved": "2026-04-01",
+    "assay": "WGTS",
+    "requisition_id": "PLACEHOLDER",
+    "sample_type": "Laser Capture Microdissected (LCM) Tumor (fresh frozen)",
+    "tcga_code": "CHOL"
+    }
+
 
 .. _for example in our WGTS assay: https://github.com/oicr-gsi/djerba/tree/main/src/lib/djerba/helpers/input_params_helper
 

@@ -15,7 +15,7 @@ What is Djerba?
 Who is Djerba for?
 ==================
 
-`Djerba`_ was developed by the Clinical Genome Interpretation (CGI) team at the `Ontario Institute for Cancer Research`_ (OICR) in Toronto, Canada. It has been in use since 2021 to produce `accredited clinical reports`_.
+`Djerba`_ was developed by the Clinical Genome Interpretation (CGI) team at the `Ontario Institute for Cancer Research`_ (OICR) in Toronto, Canada. It has been in use since 2021 to produce `accredited clinical reports`_ -- more than 2000 in total, as of September 2026.
 
 The CGI team is part of Genome Sequence Informatics (GSI), which in turn is part of the `Joint Genomics Program`_ at OICR. GSI has developed a large suite of open-source software, including a number of tools used alongside Djerba to deliver bioinformatic analysis and reporting. The software can be found under the Github organizations `oicr-gsi`_ and `miso-lims`_, and is documented on the `GSI ReadTheDocs`_ site.
 
