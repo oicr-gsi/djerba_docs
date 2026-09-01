@@ -242,6 +242,8 @@ Djerba uses templates and stylesheets to control the overall look-and-feel of th
 
 The default versions of these files have the OICR branding and colour scheme. They are part of the `Djerba code repository`_, and are automatically copied to the Djerba installation directory. The user may set an alternate location for these files using the ``DJERBA_CORE_HTML_DIR``  :ref:`environment variable <environment-variables>`.
 
+For further details, see the :ref:`document-configuration` section.
+
 .. _Djerba code repository: https://github.com/oicr-gsi/djerba/tree/main/src/lib/djerba/core
 
 **************
