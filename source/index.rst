@@ -11,4 +11,5 @@ Djerba
    introduction/introduction
    how_djerba_works/how_djerba_works
    user_guide/user_guide
+   plugin_reference/plugin_reference
    contact/contact
