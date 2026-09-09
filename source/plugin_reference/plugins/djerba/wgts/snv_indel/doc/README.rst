@@ -9,7 +9,7 @@ The ``wgts.snv_indel`` plugin reports SNVs and indels in WGTS/WGS data.
 
 It is important for displaying variants and identifying treatment options in clinical reporting.
 
-Key steps of the plugin workflow include:
+Plugin actions include:
 
 * Filtering the input data to discard unwanted variant calls
 * Annotation of calls using `OncoKB`_ to find oncogenic status and treatment options, if any
@@ -76,7 +76,7 @@ A MAF input row is **kept** for downstream analysis if **all** of the following 
 5. ``biotype`` is ``protein_coding``
 6. ``variant_classification`` is any of:
 
-   1. ``5Flank``
+   1. ``5'Flank``
    2. ``Frame_Shift_Del``
    3. ``Frame_Shift_Ins``
    4. ``In_Frame_Del``
@@ -110,21 +110,6 @@ A MAF input row is **kept** for downstream analysis if **all** of the following 
 
 .. _filtered: https://github.com/oicr-gsi/djerba/blob/a45e70a30485bb415723d019b47fdfc6400e7775/src/lib/djerba/plugins/wgts/snv_indel/tools.py#L85
 .. _MAF documentation: https://docs.gdc.cancer.gov/Data/File_Formats/MAF_Format/
-
-Comparison with TMB Computation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The following ``variant_classification`` values are *included* by the MAF filter, but *excluded* from computation of tumour mutation burden (TMB) by the `genomic landscape plugin`_.
-
-1. ``3'Flank``
-2. ``3'UTR``
-3. ``5'Flank``
-4. ``5'UTR``
-5. ``Silent``
-6. ``Splice_Region``
-7. ``Targeted_Region``
-
-.. _genomic landscape plugin: https://github.com/oicr-gsi/djerba/tree/main/src/lib/djerba/plugins/genomic_landscape
 
 Variant Annotation
 ^^^^^^^^^^^^^^^^^^
@@ -167,6 +152,25 @@ If the input MAF file lists the gene as *BRAF* and the protein as p.V640E, the p
 
 For splice site mutations, the protein is denoted by the HGVS coding sequence name, in the ``HGVSc`` column of the MAF file.
 
+
+Downstream Dependency for TMB
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The  `genomic landscape plugin`_ uses the ``data_mutations_extended.txt`` file written to the workspace by this plugin, in order to compute tumour mutation burden (TMB).
+
+The following ``variant_classification`` values are *included* by the MAF filter, but *excluded* from TMB in the `genomic landscape plugin`_.
+
+1. ``3'Flank``
+2. ``3'UTR``
+3. ``5'Flank``
+4. ``5'UTR``
+5. ``Silent``
+6. ``Splice_Region``
+7. ``Targeted_Region``
+
+.. _genomic landscape plugin: https://github.com/oicr-gsi/djerba/tree/main/src/lib/djerba/plugins/genomic_landscape
+
+.. TODO make a note of this in genomic_landscape documentation
 
 Output
 ------
