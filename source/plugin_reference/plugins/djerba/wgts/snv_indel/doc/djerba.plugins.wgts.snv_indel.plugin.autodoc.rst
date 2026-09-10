@@ -4,9 +4,9 @@ Package djerba: Plugin wgts.snv_indel
 
 
         * :ref:`djerba.plugins.wgts.snv_indel.plugin_summary`
-        * :ref:`djerba.plugins.wgts.snv_indel.plugin_description`
         * :ref:`djerba.plugins.wgts.snv_indel.plugin_generic_params`
         * :ref:`djerba.plugins.wgts.snv_indel.plugin_specific_params`
+        * :ref:`djerba.plugins.wgts.snv_indel.plugin_description`
         
         .. _djerba.plugins.wgts.snv_indel.plugin_summary:
 
@@ -258,20 +258,27 @@ Plots
 
 * Histogram of VAF for all somatic mutations
 
-
-Workspace Files
-----------------
-
-1. ``data_mutations_extended.txt``: TSV file in a modified MAF format, following OncoKB annotation
-2. ``data_mutations_extended_oncogenic.txt``: As above, but for oncogenic mutations only
-3. ``filtered_maf.tsv``: File with variants which remain after initial filtering
-
 Whizbam Links
 -------------
 
 The plugin generates Integrative Genomics Viewer (IGV) links for the `OICR Whizbam server`_, and inserts them as the final column in ``data_mutations_extended.txt`` and ``data_mutations_extended_oncogenic.txt``.
 
 .. _OICR Whizbam server : https://whizbam.oicr.on.ca/
+
+Workspace Files
+----------------
+
+The following files are written to the workspace, from earliest to latest:
+
+1. ``filtered_maf.tsv``: Variants after initial filtering of the input MAF file
+2. ``oncokb_clinical_info.txt``: File with the sample ID and Oncotree code, used as argument to the oncokb-annotator scripts
+3. ``annotated_maf.tsv``: Variants from ``filtered_maf.tsv``, with annotation by onckb-annotator
+4. ``data_mutations_extended.txt``: Variants from ``annotated_maf.tsv``, with Whizbam links
+5. ``data_mutations_extended_oncogenic.txt``: As above, but for oncogenic mutations only
+6. ``vaf_plot.svg``: VAF histogram for the report
+7. ``whizbam_all.txt``: Whizbam column from ``data_mutations_extended_oncogenic.txt``, copied to a separate file for easier reading
+8. ``whizbam_oncogenic.txt``: As above, but for oncogenic mutations only
+
 
 Example Report Output
 ---------------------
