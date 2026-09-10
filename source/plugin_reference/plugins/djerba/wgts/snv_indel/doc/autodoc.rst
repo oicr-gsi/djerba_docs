@@ -1,14 +1,14 @@
-=====================================
-Package djerba: Plugin wgts.snv_indel
-=====================================
+====================================
+Package djerba: Plugin case_overview
+====================================
 
 
-        * :ref:`summary`
-        * :ref:`specific_params`
-        * :ref:`generic_params`
-        * :ref:`description`
+        * :ref:`djerba.plugins.case_overview.plugin_summary`
+        * :ref:`djerba.plugins.case_overview.plugin_description`
+        * :ref:`djerba.plugins.case_overview.plugin_generic_params`
+        * :ref:`djerba.plugins.case_overview.plugin_specific_params`
         
-        .. _summary:
+        .. _djerba.plugins.case_overview.plugin_summary:
 
 ***********************************
 Summary
@@ -29,30 +29,32 @@ Plugin actions include:
 .. _OICR Whizbam server : https://whizbam.oicr.on.ca/
 .. _OncoKB: https://www.oncokb.org/
 
-.. _specific_params:
+.. _djerba.plugins.case_overview.plugin_specific_params:
 
 ***********************************
 Specific parameters
 ***********************************
 
-=============== =======================================================
-Parameter       Default                                                
-=============== =======================================================
-apply cache     False                                                  
-maf_path        N/A                                                    
-normal_id       N/A                                                    
-oncokb cache    /.mounts/labs/CGI/gsi/tools/djerba/oncokb_cache/scratch
-oncotree_code   N/A                                                    
-project         N/A                                                    
-tumour_id       N/A                                                    
-update cache    False                                                  
-whizbam_project N/A                                                    
-=============== =======================================================
+==================== =======
+Parameter            Default
+==================== =======
+assay                N/A    
+assay_description    N/A    
+donor                N/A    
+normal_id            N/A    
+patient_study_id     N/A    
+primary_cancer       N/A    
+report_id            N/A    
+requisition_approved N/A    
+site_of_biopsy       N/A    
+study                N/A    
+tumour_id            N/A    
+==================== =======
 
 Hello, world!
 
 
-.. _generic_params:
+.. _djerba.plugins.case_overview.plugin_generic_params:
 
 ***********************************
 Generic parameters
@@ -62,16 +64,16 @@ Generic parameters
 Parameter          Default 
 ================== ========
 attributes         clinical
-configure_priority 700     
+configure_priority 200     
 depends_configure  (empty) 
 depends_extract    (empty) 
-extract_priority   800     
-render_priority    700     
+extract_priority   200     
+render_priority    40      
 ================== ========
 
 lorem ipsum dolor
 
-.. _description:
+.. _djerba.plugins.case_overview.plugin_description:
 
 ***********************************
 Description

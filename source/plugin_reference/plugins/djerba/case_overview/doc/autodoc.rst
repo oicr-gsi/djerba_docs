@@ -3,12 +3,12 @@ Package djerba: Plugin case_overview
 ====================================
 
 
-        * :ref:`summary`
-        * :ref:`specific_params`
-        * :ref:`generic_params`
-        * :ref:`description`
+        * :ref:`djerba.plugins.case_overview.plugin_summary`
+        * :ref:`djerba.plugins.case_overview.plugin_description`
+        * :ref:`djerba.plugins.case_overview.plugin_generic_params`
+        * :ref:`djerba.plugins.case_overview.plugin_specific_params`
         
-        .. _summary:
+        .. _djerba.plugins.case_overview.plugin_summary:
 
 ***********************************
 Summary
@@ -22,7 +22,7 @@ Assay can be specified by:
 Typically the short name will be used, but the full name is supported as an INI parameter
 in case assay names are introduced/changed at short notice
 
-.. _specific_params:
+.. _djerba.plugins.case_overview.plugin_specific_params:
 
 ***********************************
 Specific parameters
@@ -43,7 +43,8 @@ site_of_biopsy       N/A
 study                N/A    
 tumour_id            N/A    
 ==================== =======
-.. _generic_params:
+
+.. _djerba.plugins.case_overview.plugin_generic_params:
 
 ***********************************
 Generic parameters
@@ -59,7 +60,8 @@ depends_extract    (empty)
 extract_priority   200     
 render_priority    40      
 ================== ========
-.. _description:
+
+.. _djerba.plugins.case_overview.plugin_description:
 
 ***********************************
 Description
