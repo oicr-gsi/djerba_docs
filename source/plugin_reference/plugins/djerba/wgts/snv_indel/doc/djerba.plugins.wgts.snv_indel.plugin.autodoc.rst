@@ -35,19 +35,19 @@ Plugin actions include:
 Specific parameters
 ***********************************
 
-=============== =======================================================
-Parameter       Default                                                
-=============== =======================================================
-apply cache     False                                                  
-maf_path        N/A                                                    
-normal_id       N/A                                                    
-oncokb cache    /.mounts/labs/CGI/gsi/tools/djerba/oncokb_cache/scratch
-oncotree_code   N/A                                                    
-project         N/A                                                    
-tumour_id       N/A                                                    
-update cache    False                                                  
-whizbam_project N/A                                                    
-=============== =======================================================
+=============== ======================================================= =================================
+Parameter       Default                                                 Notes                            
+=============== ======================================================= =================================
+apply cache     False                                                                                    
+maf_path        N/A                                                                                      
+normal_id       N/A                                                                                      
+oncokb cache    /.mounts/labs/CGI/gsi/tools/djerba/oncokb_cache/scratch                                  
+oncotree_code   N/A                                                                                      
+project         N/A                                                                                      
+tumour_id       N/A                                                                                      
+update cache    False                                                                                    
+whizbam_project N/A                                                     Name of project for Whizbam links
+=============== ======================================================= =================================
 
 Hello, world!
 
@@ -58,16 +58,16 @@ Hello, world!
 Generic parameters
 ***********************************
 
-================== ========
-Parameter          Default 
-================== ========
-attributes         clinical
-configure_priority 700     
-depends_configure  (empty) 
-depends_extract    (empty) 
-extract_priority   800     
-render_priority    700     
-================== ========
+================== ======== =====
+Parameter          Default  Notes
+================== ======== =====
+attributes         clinical      
+configure_priority 700           
+depends_configure  (empty)       
+depends_extract    (empty)       
+extract_priority   800           
+render_priority    700           
+================== ======== =====
 
 lorem ipsum dolor
 
