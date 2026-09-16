@@ -115,6 +115,8 @@ What should I read next?
 
 The :doc:`../user_guide/user_guide` describes how to install Djerba, and run existing plugins to produce reports.
 
+The :doc:`../plugin_reference/plugin_reference` has documentation for individual plugins. As of September 2026 this does not yet cover all plugins, work to expand it is ongoing.
+
 .. TODO We encourage users to write their own plugins, as described in the Developer Guide.
 
 .. TODO The Component Reference has detailed descriptions of plugins and other components of Djerba, used for clinical reporting at OICR.
