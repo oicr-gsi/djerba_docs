@@ -11,6 +11,7 @@ djerba: wgts.snv_indel: v1.0.0
 
 
 For explanation of each section, see the main :ref:`plugin-reference` page.
+
 .. _djerba.wgts.snv_indel_summary:
 
 ***********************************
