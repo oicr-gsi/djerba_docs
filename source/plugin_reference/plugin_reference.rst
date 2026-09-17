@@ -9,7 +9,11 @@ This section contains documentation for individual plugins.
 Guide to Plugin Documentation
 =============================
 
-Plugin documentation follows a common format, with the following sections:
+Documentation for plugins shares a common format.
+
+At the top is a header with the top-level package name, the plugin name, and the plugin version.
+
+We then have the following sections:
 
 * **Summary**: Brief summary of what the plugin does
 * **Specific parameters**: INI parameters specific to the plugin, with defaults
