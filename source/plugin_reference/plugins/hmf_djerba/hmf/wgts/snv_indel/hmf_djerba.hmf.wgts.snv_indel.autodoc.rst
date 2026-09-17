@@ -1,6 +1,6 @@
-=============================================
-Package hmf_djerba: Plugin hmf.wgts.snv_indel
-=============================================
+======================================
+hmf_djerba: hmf.wgts.snv_indel: v1.0.0
+======================================
 
 
         * :ref:`hmf_djerba.hmf.wgts.snv_indel_summary`
@@ -8,16 +8,20 @@ Package hmf_djerba: Plugin hmf.wgts.snv_indel
         * :ref:`hmf_djerba.hmf.wgts.snv_indel_specific_params`
         * :ref:`hmf_djerba.hmf.wgts.snv_indel_description`
         
-        .. _hmf_djerba.hmf.wgts.snv_indel_summary:
+
+
+For explanation of each section, see the main :ref:`plugin-reference` page.
+
+.. _hmf_djerba.hmf.wgts.snv_indel_summary:
 
 ***********************************
 Summary
 ***********************************
-
+No summary provided.
 .. _hmf_djerba.hmf.wgts.snv_indel_specific_params:
 
 ***********************************
-Specific parameters
+Specific Parameters
 ***********************************
 
 =============== ======================================================= =====
@@ -38,7 +42,7 @@ whizbam_project N/A
 .. _hmf_djerba.hmf.wgts.snv_indel_generic_params:
 
 ***********************************
-Generic parameters
+Generic Parameters
 ***********************************
 
 ================== ======== =====
@@ -59,4 +63,4 @@ render_priority    700
 Description
 ***********************************
 
-
+No description provided.
