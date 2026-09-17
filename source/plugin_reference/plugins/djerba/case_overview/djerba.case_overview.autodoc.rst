@@ -26,6 +26,7 @@ Assay can be specified by:
 Typically the short name will be used, but the full name is supported as an INI parameter
 in case assay names are introduced/changed at short notice
 
+
 .. _djerba.case_overview_specific_params:
 
 ***********************************
@@ -72,3 +73,4 @@ Description
 ***********************************
 
 No description provided.
+

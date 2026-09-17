@@ -18,6 +18,7 @@ For explanation of each section, see the main :ref:`plugin-reference` page.
 Summary
 ***********************************
 No summary provided.
+
 .. _hmf_djerba.hmf.wgts.snv_indel_specific_params:
 
 ***********************************
@@ -64,3 +65,4 @@ Description
 ***********************************
 
 No description provided.
+
