@@ -7,10 +7,11 @@ djerba: wgts.snv_indel: v1.0.0
         * :ref:`djerba.wgts.snv_indel_generic_params`
         * :ref:`djerba.wgts.snv_indel_specific_params`
         * :ref:`djerba.wgts.snv_indel_description`
-
         
+
+
 For explanation of each section, see the main :ref:`plugin-reference` page.
-        .. _djerba.wgts.snv_indel_summary:
+.. _djerba.wgts.snv_indel_summary:
 
 ***********************************
 Summary
@@ -21,12 +22,12 @@ It is important for displaying variants and identifying treatment options in cli
 
 Plugin actions include:
 
-* Filtering the input data to discard unwanted variant calls
-* Annotation of calls using `OncoKB`_ to find oncogenic status and treatment options, if any
-* Computing the Loss of Heterozygosity (LOH) status for each variant
-* Producing a table of data for each variant, and summary metrics for the genome
-* Generating a histogram of variant allele frequency (VAF)
-* Generating Integrative Genomics Viewer (IGV) links for the `OICR Whizbam server`_
+1. Filtering the input data to discard unwanted variant calls
+2. Annotation of calls using `OncoKB`_ to find oncogenic status and treatment options, if any
+3. Computing the Loss of Heterozygosity (LOH) status for each variant
+4. Producing a table of data for each variant, and summary metrics for the genome
+5. Generating a histogram of variant allele frequency (VAF)
+6. Generating Integrative Genomics Viewer (IGV) links for the `OICR Whizbam server`_
 
 .. _OICR Whizbam server : https://whizbam.oicr.on.ca/
 .. _OncoKB: https://www.oncokb.org/
