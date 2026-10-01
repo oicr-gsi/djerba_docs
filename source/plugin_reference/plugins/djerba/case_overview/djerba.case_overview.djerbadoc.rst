@@ -1,7 +1,12 @@
-=============================
-djerba: case_overview: v1.0.0
-=============================
+=====================
+djerba: case_overview
+=====================
 
+**Version:** 1.0.0
+
+***********************************
+Contents
+***********************************
 
         * :ref:`djerba.case_overview_summary`
         * :ref:`djerba.case_overview_generic_params`

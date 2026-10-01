@@ -43,9 +43,9 @@ Contents
 .. toctree::
    :maxdepth: 1
 
-   plugins/djerba/case_overview/djerba.case_overview.autodoc.rst
-   plugins/djerba/wgts/snv_indel/djerba.wgts.snv_indel.autodoc.rst
-   plugins/hmf_djerba/hmf/wgts/snv_indel/hmf_djerba.hmf.wgts.snv_indel.autodoc.rst
+   plugins/djerba/case_overview/djerba.case_overview.djerbadoc.rst
+   plugins/djerba/wgts/snv_indel/djerba.wgts.snv_indel.djerbadoc.rst
+   plugins/hmf_djerba/hmf/wgts/snv_indel/hmf_djerba.hmf.wgts.snv_indel.djerbadoc.rst
 
 
 

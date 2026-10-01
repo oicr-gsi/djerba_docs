@@ -1,7 +1,12 @@
-======================================
-hmf_djerba: hmf.wgts.snv_indel: v1.0.0
-======================================
+==============================
+hmf_djerba: hmf.wgts.snv_indel
+==============================
 
+**Version:** 1.0.0
+
+***********************************
+Contents
+***********************************
 
         * :ref:`hmf_djerba.hmf.wgts.snv_indel_summary`
         * :ref:`hmf_djerba.hmf.wgts.snv_indel_generic_params`

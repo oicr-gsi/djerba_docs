@@ -1,7 +1,12 @@
-==============================
-djerba: wgts.snv_indel: v1.0.0
-==============================
+======================
+djerba: wgts.snv_indel
+======================
 
+**Version:** 1.0.0
+
+***********************************
+Contents
+***********************************
 
         * :ref:`djerba.wgts.snv_indel_summary`
         * :ref:`djerba.wgts.snv_indel_generic_params`
@@ -32,6 +37,7 @@ Plugin actions include:
 
 .. _OICR Whizbam server : https://whizbam.oicr.on.ca/
 .. _OncoKB: https://www.oncokb.org/
+
 
 .. _djerba.wgts.snv_indel_specific_params:
 
@@ -287,4 +293,5 @@ Example Report Output
 .. image:: wgts.snv_indel_output.png
 
 **Figure 1**: Example output from the wgts.snv_indel plugin. Expression values are omitted because this was a WGS report.
+
 
