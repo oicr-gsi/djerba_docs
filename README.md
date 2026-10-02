@@ -24,14 +24,32 @@ Open the local copy of the website at `build/html/index.html`
 
 ## Updating documentation
 
+### Markup language
+
 Documentation is written in reStructuredText. Here's a [primer](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html).
+
+### Scripts
+
+The `python` directory contains the following scripts:
+* `djerbadoc.py`: Script to automatically generate documentation for a Djerba component. Named by analogy with `pydoc`, `javadoc`, etc.
+* `tsv2rst.py`: Convenience script to transform a TSV file (with headers) into a reStructuredText table.
 
 ## Deploy documentation to ReadTheDocs
 
-Documentation pushed to the `main` branch is automatically built on RtD.
+Documentation pushed to the `main` branch is automatically built on RtD as the "latest" version.
 
 * Project page on RtD : https://app.readthedocs.org/projects/djerba/
 * Latest documentation : https://djerba.readthedocs.io/en/latest/
+
+The most recent tagged release is built as the "stable" version:
+* Stable documentation : https://djerba.readthedocs.io/en/stable
+
+## Release history
+
+### v0.0.1: 2026-10-02
+
+* Initial release with Djerba documentation and scripts.
+* General-purpose documentation sections are reasonably complete, most components are TBD.
 
 ## Copyright and License
 
