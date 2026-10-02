@@ -2,7 +2,8 @@
 djerba: case_overview
 =====================
 
-**Version:** 1.0.0
+Version: 1.0.0
+######################
 
 ***********************************
 Contents
@@ -15,7 +16,7 @@ Contents
         
 
 
-For explanation of each section, see the main :ref:`plugin-reference` page.
+For explanation of each section, see the main :ref:`component-reference` page.
 
 .. _djerba.case_overview_summary:
 

@@ -1,17 +1,19 @@
-.. _plugin-reference:
+.. _component-reference:
 
-****************
-Plugin Reference
-****************
+*******************
+Component Reference
+*******************
 
-This section contains documentation for individual plugins.
+This section contains documentation for the modular *components* of Djerba: Plugins, helpers, and mergers.
 
-Guide to Plugin Documentation
-=============================
+The majority of components are plugins, but helpers and mergers play an important role. See :doc:`../../how_djerba_works/how_djerba_works` for details.
 
-Documentation for plugins shares a common format.
+Guide to Component Documentation
+================================
 
-At the top is a header with the top-level package name, the plugin name, and the plugin version.
+Documentation for components shares a common format.
+
+At the top is a header with the top-level package name and the component name, followed by the component version.
 
 We then have the following sections:
 
@@ -41,7 +43,7 @@ Contents
 ========
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    plugins/djerba/case_overview/djerba.case_overview.djerbadoc.rst
    plugins/djerba/wgts/snv_indel/djerba.wgts.snv_indel.djerbadoc.rst

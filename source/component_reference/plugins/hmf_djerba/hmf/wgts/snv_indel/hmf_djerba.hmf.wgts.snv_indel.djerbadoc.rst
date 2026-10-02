@@ -2,7 +2,7 @@
 hmf_djerba: hmf.wgts.snv_indel
 ==============================
 
-**Version:** 1.0.0
+.. rubric:: Version: 1.0.0
 
 ***********************************
 Contents
@@ -15,7 +15,7 @@ Contents
         
 
 
-For explanation of each section, see the main :ref:`plugin-reference` page.
+For explanation of each section, see the main :ref:`component-reference` page.
 
 .. _hmf_djerba.hmf.wgts.snv_indel_summary:
 

@@ -6,6 +6,8 @@ In this section we describe key concepts used by Djerba to direct the reporting 
 
 For details of how to run Djerba, see the :doc:`../../user_guide/user_guide`. This section describes more general principles of operation.
 
+The :doc:`../../glossary/glossary` provides definitions for commonly used terms.
+
 .. _production-steps:
 
 Production Steps

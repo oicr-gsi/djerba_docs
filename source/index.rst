@@ -11,5 +11,6 @@ Djerba
    introduction/introduction
    how_djerba_works/how_djerba_works
    user_guide/user_guide
-   plugin_reference/plugin_reference
+   component_reference/component_reference
+   glossary/glossary
    contact/contact
